@@ -1,0 +1,254 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    color: #f8fbff;
+    background-color: #0b1739;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    overflow-x: hidden;
+    background:
+        radial-gradient(circle at 18% 20%, rgba(255, 211, 105, 0.32), transparent 25%),
+        radial-gradient(circle at 82% 78%, rgba(93, 217, 255, 0.24), transparent 28%),
+        linear-gradient(145deg, #4377cf 0%, #244b98 46%, #101e49 100%);
+}
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    z-index: -1;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    filter: blur(8px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body::before {
+    top: -150px;
+    right: -80px;
+}
+
+body::after {
+    bottom: -190px;
+    left: -90px;
+}
+
+.input-container {
+    width: min(100%, 540px);
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 15px 40px rgba(5, 18, 57, 0.22);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.input-container form {
+    display: flex;
+    gap: 10px;
+}
+
+.input-container input,
+.input-container button {
+    min-height: 50px;
+    border: 0;
+    border-radius: 13px;
+    font: inherit;
+}
+
+.input-container input {
+    min-width: 0;
+    flex: 1;
+    padding: 0 18px;
+    color: #16254d;
+    outline: 2px solid transparent;
+    background: rgba(255, 255, 255, 0.92);
+    transition: outline-color 180ms ease, background-color 180ms ease;
+}
+
+.input-container input::placeholder {
+    color: #74809e;
+}
+
+.input-container input:focus {
+    outline-color: #ffd369;
+    background: #ffffff;
+}
+
+.input-container button {
+    padding: 0 22px;
+    color: #172345;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ffe394, #ffc857);
+    box-shadow: 0 7px 18px rgba(255, 193, 69, 0.25);
+    transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+
+.input-container button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.04);
+    box-shadow: 0 10px 24px rgba(255, 193, 69, 0.34);
+}
+
+.input-container button:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.input-container button:focus-visible {
+    outline: 3px solid rgba(255, 255, 255, 0.9);
+    outline-offset: 3px;
+}
+
+.weather-container {
+    position: relative;
+    width: min(100%, 390px);
+    min-height: 430px;
+    padding: 38px 34px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    color: #ffffff;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.08));
+    box-shadow: 0 24px 60px rgba(5, 17, 52, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.weather-container::before {
+    content: "";
+    position: absolute;
+    top: -70px;
+    right: -70px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: rgba(255, 218, 121, 0.22);
+    filter: blur(2px);
+}
+
+.cityName {
+    position: relative;
+    margin: 0 0 14px;
+    font-size: clamp(1.6rem, 6vw, 2.1rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.temperature {
+    position: relative;
+    margin: 0;
+    font-size: clamp(4.6rem, 18vw, 6.5rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.07em;
+    text-shadow: 0 8px 24px rgba(8, 29, 75, 0.22);
+}
+
+.temperature::after {
+    content: "°";
+    position: absolute;
+    margin-left: 5px;
+    font-size: 0.48em;
+    font-weight: 400;
+    letter-spacing: 0;
+}
+
+.humidity,
+.description,
+.weatherEmoji,
+.error {
+    position: relative;
+}
+
+.humidity {
+    margin: 22px 0 0;
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    color: #eaf5ff;
+    background: rgba(10, 35, 82, 0.24);
+}
+
+.humidity::before {
+    content: "Humidity  ";
+    font-weight: 600;
+}
+
+.humidity::after {
+    content: "%";
+}
+
+.description {
+    margin: 20px 0 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.weatherEmoji {
+    order: -1;
+    margin: 0 0 12px;
+    font-size: 5rem;
+    line-height: 1;
+    filter: drop-shadow(0 9px 15px rgba(9, 28, 70, 0.25));
+}
+
+.error {
+    width: 100%;
+    margin: 22px 0 0;
+    padding: 11px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: #fff1f1;
+    font-size: 0.95rem;
+    background: rgba(174, 42, 62, 0.3);
+}
+
+@media (max-width: 520px) {
+    body {
+        justify-content: flex-start;
+        padding: 24px 14px;
+    }
+
+    .input-container form {
+        flex-direction: column;
+    }
+
+    .input-container button {
+        width: 100%;
+    }
+
+    .weather-container {
+        min-height: 400px;
+        padding: 30px 22px 26px;
+        border-radius: 24px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .input-container input,
+    .input-container button {
+        transition: none;
+    }
+}
