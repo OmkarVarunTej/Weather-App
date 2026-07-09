@@ -14,6 +14,19 @@
         </form>
     </div>
     <div class = "weather-container" style = "display: none;">
+        <div class="weather-loader" aria-live="polite" aria-label="Loading weather data" hidden>
+            <div class="loader">
+                <span><span></span><span></span><span></span><span></span></span>
+                <div class="base">
+                    <span></span>
+                    <div class="face"></div>
+                </div>
+            </div>
+            <div class="longfazers">
+                <span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="weather-content"></div>
     </div>
     <script src = "weatherapp.js"></script>
 </body>

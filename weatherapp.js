@@ -1,6 +1,8 @@
 const weatherForm = document.querySelector('.weather-form');
 const cityInput = document.querySelector('.cityInput');
 const card = document.querySelector('.weather-container');
+const content = document.querySelector('.weather-content');
+const loader = document.querySelector('.weather-loader');
 const apiKey = 'YOUR_API_KEY_HERE'; // Use Your Own Weather API Key from OpenWeatherMap 
 
 weatherForm.addEventListener('submit', async (event) => {
@@ -50,8 +52,10 @@ function displayWeatherInfo(data) {
         weather: [{description, id}]
     } = data;
 
-    card.textContent = '';
+    content.innerHTML = '';
+    content.hidden = false;
     card.style.display = 'flex';
+    card.classList.remove('is-loading');
 
     const cityNameEl = document.createElement('h2');
     const temperatureEl = document.createElement('p');
@@ -71,7 +75,7 @@ function displayWeatherInfo(data) {
     descriptionEl.classList.add('description');
     weatherEmoji.classList.add('weatherEmoji');
 
-    card.append(cityNameEl, temperatureEl, humidityEl, descriptionEl, weatherEmoji);
+    content.append(cityNameEl, temperatureEl, humidityEl, descriptionEl, weatherEmoji);
 }
 
 function getWeatherEmoji(weatherId) {
@@ -90,13 +94,24 @@ function displayError(message) {
     error.classList.add('error');
     error.textContent = message;
 
-    card.textContent = '';
+    content.innerHTML = '';
+    content.hidden = false;
     card.style.display = 'flex';
-    card.appendChild(error);
+    card.classList.remove('is-loading');
+    content.appendChild(error);
 }
 
 function setLoadingState(isLoading) {
     const button = weatherForm.querySelector('.fetchWeatherBtn');
     button.disabled = isLoading;
     button.textContent = isLoading ? 'Loading...' : 'Get Weather';
+
+    card.style.display = 'flex';
+    loader.hidden = !isLoading;
+    content.hidden = isLoading;
+    card.classList.toggle('is-loading', isLoading);
+
+    if (isLoading) {
+        content.innerHTML = '';
+    }
 }
