@@ -6,13 +6,10 @@ const loader = document.querySelector('.weather-loader');
 const apiKey = 'f396b1b9a9f672621f8049f145529945'; // Use Your Own Weather API Key from OpenWeatherMap 
 let clockInterval;
 
-weatherForm.addEventListener('submit', (event) => {
+weatherForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const cityName = cityInput.value.trim();
-    fetchWeatherForCity(cityName);
-});
 
-async function fetchWeatherForCity(cityName) {
     if (!cityName) {
         displayError('Please enter a city name.');
         return;
@@ -23,13 +20,12 @@ async function fetchWeatherForCity(cityName) {
     try {
         const weatherData = await getWeatherData(cityName);
         displayWeatherInfo(weatherData);
-        saveToRecentSearches(weatherData.name);
     } catch (error) {
         displayError(error.message);
     } finally {
         setLoadingState(false);
     }
-}
+});
 
 async function getWeatherData(cityName) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(cityName)}&appid=${apiKey}&units=metric`;
@@ -159,60 +155,3 @@ function setLoadingState(isLoading) {
         }
     }
 }
-
-function saveToRecentSearches(cityName) {
-    let searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
-    searches = searches.filter(c => c.toLowerCase() !== cityName.toLowerCase());
-    searches.unshift(cityName);
-    if (searches.length > 5) {
-        searches.pop();
-    }
-    localStorage.setItem('recentSearches', JSON.stringify(searches));
-    renderRecentSearches();
-}
-
-function renderRecentSearches() {
-    const recentContainer = document.querySelector('.recent-searches');
-    if (!recentContainer) return;
-
-    const searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
-
-    if (searches.length === 0) {
-        recentContainer.style.display = 'none';
-        recentContainer.innerHTML = '';
-        return;
-    }
-
-    recentContainer.style.display = 'flex';
-    recentContainer.innerHTML = '';
-
-    const title = document.createElement('h3');
-    title.classList.add('recent-title');
-    title.textContent = 'Recent Searches';
-    recentContainer.appendChild(title);
-
-    searches.forEach(city => {
-        const pill = document.createElement('button');
-        pill.classList.add('recent-pill');
-        pill.type = 'button';
-        pill.textContent = city;
-        pill.addEventListener('click', () => {
-            cityInput.value = city;
-            fetchWeatherForCity(city);
-        });
-        recentContainer.appendChild(pill);
-    });
-
-    const clearBtn = document.createElement('button');
-    clearBtn.classList.add('clear-recent-btn');
-    clearBtn.type = 'button';
-    clearBtn.textContent = 'Clear';
-    clearBtn.addEventListener('click', () => {
-        localStorage.removeItem('recentSearches');
-        renderRecentSearches();
-    });
-    recentContainer.appendChild(clearBtn);
-}
-
-// Initial render
-renderRecentSearches();
