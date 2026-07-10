@@ -155,6 +155,25 @@ body::after {
     letter-spacing: 0.02em;
 }
 
+.localTime {
+    position: relative;
+    margin: -4px 0 18px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: rgba(248, 251, 255, 0.95);
+    background: rgba(255, 255, 255, 0.08);
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(5, 17, 52, 0.12);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
 .temperature {
     position: relative;
     margin: 0;

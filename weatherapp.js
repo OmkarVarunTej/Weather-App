@@ -3,7 +3,8 @@ const cityInput = document.querySelector('.cityInput');
 const card = document.querySelector('.weather-container');
 const content = document.querySelector('.weather-content');
 const loader = document.querySelector('.weather-loader');
-const apiKey = 'YOUR_API_KEY_HERE'; // Use Your Own Weather API Key from OpenWeatherMap 
+const apiKey = 'f396b1b9a9f672621f8049f145529945'; // Use Your Own Weather API Key from OpenWeatherMap 
+let clockInterval;
 
 weatherForm.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -49,7 +50,8 @@ function displayWeatherInfo(data) {
     const {
         name,
         main: {temp, humidity: humidityValue},
-        weather: [{description, id}]
+        weather: [{description, id}],
+        timezone
     } = data;
 
     content.innerHTML = '';
@@ -58,6 +60,7 @@ function displayWeatherInfo(data) {
     card.classList.remove('is-loading');
 
     const cityNameEl = document.createElement('h2');
+    const localTimeEl = document.createElement('p');
     const temperatureEl = document.createElement('p');
     const humidityEl = document.createElement('p');
     const descriptionEl = document.createElement('p');
@@ -70,13 +73,44 @@ function displayWeatherInfo(data) {
     weatherEmoji.textContent = getWeatherEmoji(id);
 
     cityNameEl.classList.add('cityName');
+    localTimeEl.classList.add('localTime');
     temperatureEl.classList.add('temperature');
     humidityEl.classList.add('humidity');
     descriptionEl.classList.add('description');
     weatherEmoji.classList.add('weatherEmoji');
 
-    content.append(cityNameEl, temperatureEl, humidityEl, descriptionEl, weatherEmoji);
+    content.append(cityNameEl, localTimeEl, temperatureEl, humidityEl, descriptionEl, weatherEmoji);
+
+    startClock(timezone, localTimeEl);
 }
+
+function startClock(timezoneOffset, element) {
+    if (clockInterval) {
+        clearInterval(clockInterval);
+    }
+
+    const updateTime = () => {
+        const now = new Date();
+        const targetTimestamp = now.getTime() + (timezoneOffset * 1000);
+        const targetDate = new Date(targetTimestamp);
+        
+        const options = {
+            weekday: 'long',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+            timeZone: 'UTC'
+        };
+        
+        const timeString = new Intl.DateTimeFormat('en-US', options).format(targetDate);
+        element.textContent = `🕒 ${timeString}`;
+    };
+
+    updateTime();
+    clockInterval = setInterval(updateTime, 1000);
+}
+
 
 function getWeatherEmoji(weatherId) {
     if (weatherId >= 200 && weatherId < 300) return '\u26C8\uFE0F';
@@ -90,6 +124,9 @@ function getWeatherEmoji(weatherId) {
 }
 
 function displayError(message) {
+    if (clockInterval) {
+        clearInterval(clockInterval);
+    }
     const error = document.createElement('p');
     error.classList.add('error');
     error.textContent = message;
@@ -113,5 +150,8 @@ function setLoadingState(isLoading) {
 
     if (isLoading) {
         content.innerHTML = '';
+        if (clockInterval) {
+            clearInterval(clockInterval);
+        }
     }
 }
