@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel = "stylesheet" href = "weatherapp.css">
+    <link rel="stylesheet" href="weatherapp.css">
 </head>
+
 <body>
-    <div class = "input-container">
-        <form class = "weather-form">
-            <input type = "text" class = "cityInput" placeholder = "Enter a city name">
-            <button class = "fetchWeatherBtn" type = "submit">Get Weather</button>
+    <div class="input-container">
+        <form class="weather-form">
+            <input type="text" class="cityInput" placeholder="Enter a city name">
+            <button class="fetchWeatherBtn" type="submit">Get Weather</button>
         </form>
+        <div class="recent-searches" style="display: none;"></div>
     </div>
-    <div class = "weather-container" style = "display: none;">
+    <div class="weather-container" style="display: none;">
         <div class="weather-loader" aria-live="polite" aria-label="Loading weather data" hidden>
             <div class="loader">
                 <span><span></span><span></span><span></span><span></span></span>
@@ -29,6 +32,7 @@
         </div>
         <div class="weather-content"></div>
     </div>
-    <script src = "weatherapp.js"></script>
+    <script src="weatherapp.js"></script>
 </body>
+
 </html>
