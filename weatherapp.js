@@ -26,7 +26,11 @@ weatherForm.addEventListener('submit', async (event) => {
         setLoadingState(false);
     }
 });
-
+/**
+ * Fetches weather data for a given city from the OpenWeatherMap API.
+ * @param {string} cityName - The name of the city to fetch weather for.
+ * @returns {Promise<Object>} The weather data JSON response.
+ */
 async function getWeatherData(cityName) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(cityName)}&appid=${apiKey}&units=metric`;
     const response = await fetch(apiUrl);
